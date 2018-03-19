@@ -29,7 +29,7 @@ namespace Engine
 
         public bool HasRequiredItemToEnterThisLocation(Location location)
         {
-            if (location.ItemRequiredToEnter != null)
+            if (location.ItemRequiredToEnter == null)
             {
                 // There is no required item for this location, 
                 //so return "true"
