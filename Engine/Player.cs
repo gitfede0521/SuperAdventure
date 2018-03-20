@@ -16,8 +16,10 @@ namespace Engine
             get { return ((ExperiencePoints / 100) + 1); }
         }
         public Location CurrentLocation { get; set; }
+        public Weapon CurrentWeapon { get; set; }
         public List<InventoryItem> Inventory { get; set; }
         public List<PlayerQuest> Quests { get; set; }
+        
  
         private Player(int currentHitPoints, int maximumHitPoints, int gold, int experiencePoints) : base(currentHitPoints, maximumHitPoints)
         {
@@ -76,7 +78,14 @@ namespace Engine
  
                     player.Quests.Add(playerQuest);
                 }
- 
+
+                if (playerData.SelectSingleNode("/Player/Stats/CurrentWeapon") != null)
+                {
+                    int currentWeaponID = Convert.ToInt32(
+                    playerData.SelectSingleNode("/Player/Stats/CurrentWeapon").InnerText);
+                    player.CurrentWeapon = (Weapon)World.ItemByID(currentWeaponID);
+                }
+
                 return player;
             }
             catch
@@ -245,7 +254,16 @@ namespace Engine
  
                 playerQuests.AppendChild(playerQuest);
             }
- 
+
+            if (CurrentWeapon != null)
+            {
+                XmlNode currentWeapon =
+                playerData.CreateElement("CurrentWeapon");
+                currentWeapon.AppendChild(
+                playerData.CreateTextNode(this.CurrentWeapon.ID.ToString()));
+                stats.AppendChild(currentWeapon);
+            }
+
             return playerData.InnerXml; // The XML document, as a string, so we can save the data to disk
         }
     }
