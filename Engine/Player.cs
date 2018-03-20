@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 
 namespace Engine
@@ -124,6 +125,19 @@ namespace Engine
             {
                 playerQuest.IsCompleted = true;
             }
+        }
+
+        public string ToXmlString()
+        {
+            XmlDocument playerData = new XmlDocument();
+
+            // create top level xml node
+            XmlNode Player = playerData.CreateElement("Player");
+            playerData.AppendChild(Player);
+
+
+            return playerData.InnerXml; // The XML document, as a string, so we can save
+            //the data to disk
         }
     }
 }
